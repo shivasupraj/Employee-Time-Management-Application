@@ -1,0 +1,20 @@
+<h1>Edit timesheet</h1>
+
+{% if error %}
+    {{error}}
+{% endif %}
+Ediiting timesheet for {{timesheet.project}}
+<form action="{% url 'accounts:edittimesheet' %}" method="post">
+    {% csrf_token %}
+    {% if request.GET.next %}
+        <input type="hidden" name="next", value={{request.GET.next}}>
+    {% endif %}
+    {{request.user.username}} <br>
+    <input type="hidden" name="project_name" value='{{project_name}}'>
+    Date : <input type="date" name="date" value="{{timesheet.date|date:"Y-m-d"}}">
+    From : <input name="from" type="time" value="{{timesheet.start_time|time:"h:i"}}">
+    To   : <input name="to" type="time" value="{{timesheet.end_time|time:"h:i"}}">
+    <input type="submit" name="Add Timesheet">
+</form>
+<br>
+<a href="{% url 'accounts:logout' %}">Logout</a>
