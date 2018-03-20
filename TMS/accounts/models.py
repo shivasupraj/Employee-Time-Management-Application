@@ -21,8 +21,11 @@ class Project(models.Model):
     def __str__(self):
         return self.project_name
 
-class supervisor(model.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Supervisor(models.Model):
+    user = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    sup_name = models.CharField(max_length=200, default='sup_name')
+    def __str__(self):
+        return self.sup_name
 
 
 
