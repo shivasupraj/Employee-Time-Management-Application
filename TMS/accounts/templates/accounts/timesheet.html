@@ -1,12 +1,18 @@
 <h2>Your time sheets</h2>
 
+{%if error%}
+  <h2>{{error}}</h2>
+{%endif%}
+
 <form action="{% url 'accounts:edittimesheet' %}" method="get">
 {% if timesheets %}
-{% for timesheet in timesheets %}
-    <input type="radio" name = "timesheet_id" value="{{ timesheet.id }}">{{ timesheet.user }} - {{ timesheet.date|date:"Y-m-d" }} - {{ timesheet.start_time|time:"h:i" }} - {{ timesheet.end_time|time:"h:i" }} - {{ timesheet.project }}<br>
-{%endfor%}
-    <input type="submit" value="Edit Timesheet">
-</form>
+  {% for timesheet in timesheets %}
+      <input type="radio" name = "timesheet_id" value="{{ timesheet.id }}">{{ timesheet.user }} - {{ timesheet.date|date:"Y-m-d" }} - {{ timesheet.start_time|time:"h:i" }} - {{ timesheet.end_time|time:"h:i" }} - {{ timesheet.project }}<br>
+  {%endfor%}
+      <input type="submit" value="Edit Timesheet">
+  </form>
+{% else %}
+  <h2>You donot have any time sheets available to view</h2>
 {% endif %}
 <br>
 <a href="{% url 'accounts:logout' %}">Logout</a>

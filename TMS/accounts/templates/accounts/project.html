@@ -1,9 +1,13 @@
 
+{% if projects %}
 <form action="{% url 'accounts:addtimesheet' %}" method="get">
 {% for project in projects %}
     <input type="radio" name = "project_name" value="{{ project.project_name }}">{{ project.project_name }}<br>
 {%endfor%}
     <input type="submit" value="Add Timesheet">
 </form>
+{%else%}
+  <h2>You are not in any project currently</h2>
+{%endif%}
 <br>
 <a href="{% url 'accounts:logout' %}">Logout</a>
