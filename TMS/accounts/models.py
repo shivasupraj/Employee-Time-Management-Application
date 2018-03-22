@@ -21,14 +21,6 @@ class Project(models.Model):
     def __str__(self):
         return self.project_name
 
-class Supervisor(models.Model):
-    user = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    sup_name = models.CharField(max_length=200, default='sup_name')
-    def __str__(self):
-        return self.sup_name
-
-
-
 class TimeSheet(models.Model):
     user = models.CharField(max_length=100)
     date  = models.DateField()

@@ -1,0 +1,22 @@
+<h1>Manage Project</h1>
+
+{% if error %}
+    {{error}}<br>
+{% endif %}
+Editing Project {{project.project_name}}
+<form action="{% url 'supervisor:manageproject' %}" method="post">
+    {% csrf_token %}
+    {% if request.GET.next %}
+        <input type="hidden" name="next", value={{request.GET.next}}>
+    {% endif %}
+    <input type="hidden" name="project_id", value={{project.id}}>
+    <input type="text" name="project_name" value='{{project.project_name}}'><br>
+    Manage the employees list:<br>
+    Check the boxes to remove employees:
+    {% for employee in project.employees.all %}
+      <input type="checkbox" name="employees" value="{{employee.id}}"> {{employee}}<br>
+    {% endfor%}
+    <input type="submit" name="submit">
+</form>
+<br>
+<a href="{% url 'accounts:logout' %}">Logout</a>

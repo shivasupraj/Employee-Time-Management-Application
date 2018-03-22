@@ -19,11 +19,14 @@ def login_view(request):
     else:
         return render(request, 'accounts/login.html')
 
+# check if the user is is_authenticated
+# else render the login page
+# if logged in send him the projects he is involved in.
 def project_view(request):
     if request.user.is_authenticated:
-        username = User.objects.get(username=request.user.username)
         id = request.user.id
-        projects = Project.objects.filter(employees__id=id)
+        emp_profile = Profile.objects.filter(user=id)[0] # get the profile object of the logged in user
+        projects = emp_profile.project_set.all()         # use the profile object to get his projects
         return render(request, 'accounts/project.html', {'projects':projects})
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
@@ -47,7 +50,9 @@ def add_timesheet(request):
             timesheet.end_time = request.POST['to']
             timesheet.project = request.POST.get('project_name')
             timesheet.save()
-            projects = Project.objects.filter(employees__id=request.user.id)
+            id = request.user.id
+            emp_profile = Profile.objects.filter(user=id)[0] # get the profile object of the logged in user
+            projects = emp_profile.project_set.all()         # use the profile object to get his projects
             return render(request, 'accounts/project.html', {'projects':projects})
         else:
             project_name = request.GET.get('project_name')

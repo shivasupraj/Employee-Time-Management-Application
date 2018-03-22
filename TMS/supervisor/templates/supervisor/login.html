@@ -1,0 +1,21 @@
+<h1>Login as a supervisor</h1>
+
+{% if error %}
+    {{error}}
+{% endif %}
+<form action="{% url 'supervisor:login' %}" method="post">
+    {% csrf_token %}
+    {% if request.GET.next %}
+        <input type="hidden" name="next", value={{request.GET.next}}>
+    {% endif %}
+    User name:
+    <br>
+    <input type="text" name="username">
+    <br>
+    Password:
+    <br>
+    <input type="password" name="password">
+    <br>
+    <br>
+    <input type="submit" name="Login">
+</form>
