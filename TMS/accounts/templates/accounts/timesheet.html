@@ -7,7 +7,7 @@
 <form action="{% url 'accounts:edittimesheet' %}" method="get">
 {% if timesheets %}
   {% for timesheet in timesheets %}
-      <input type="radio" name = "timesheet_id" value="{{ timesheet.id }}">{{ timesheet.user }} - {{ timesheet.date|date:"Y-m-d" }} - {{ timesheet.start_time|time:"h:i" }} - {{ timesheet.end_time|time:"h:i" }} - {{ timesheet.project }}<br>
+      <input type="radio" name = "timesheet_id" value="{{ timesheet.id }}">{{ timesheet.emp_name }} - {{ timesheet.date|date:"Y-m-d" }} - {{ timesheet.start_time|time:"h:i" }} - {{ timesheet.end_time|time:"h:i" }} - {{ timesheet.project }}<br>
   {%endfor%}
       <input type="submit" value="Edit Timesheet">
   </form>

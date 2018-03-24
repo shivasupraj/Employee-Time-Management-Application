@@ -31,35 +31,54 @@ def project_view(request):
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
 
+# Checks if the user is logged in, else return him/her to login page
 def timesheet_view(request):
     if request.user.is_authenticated:
-        username = request.user.username
-        timesheets = TimeSheet.objects.filter(user=username)
+        profile = Profile.objects.filter(user=request.user)[0]
+        print(profile)
+        timesheets = TimeSheet.objects.filter(profile=profile)
         print(timesheets)
         return render(request, 'accounts/timesheet.html', {'timesheets':timesheets})
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
 
+# check if the user is logged in else return him to the login page
+# if request.method is GET send him the accounts/add_timesheet.html which has the form
+# to submit new TimeSheet
+# if request.method is POST write the timesheet object received to the database
 def add_timesheet(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             timesheet = TimeSheet()
-            timesheet.user = request.user.username
+            print(request.user)
             timesheet.date = request.POST['date']
             timesheet.start_time = request.POST['from']
             timesheet.end_time = request.POST['to']
-            timesheet.project = request.POST.get('project_name')
+            timesheet.project = Project.objects.filter(id=request.POST.get('project_id'))[0]
+            timesheet.emp_name = request.user.username
+            timesheet.save()
+            profile = Profile.objects.filter(user=request.user)[0]
+            print(profile)
+            timesheet.profile.add(profile)
             timesheet.save()
             id = request.user.id
+            print(timesheet.profile, request.user)
             emp_profile = Profile.objects.filter(user=id)[0] # get the profile object of the logged in user
             projects = emp_profile.project_set.all()         # use the profile object to get his projects
             return render(request, 'accounts/project.html', {'projects':projects})
         else:
-            project_name = request.GET.get('project_name')
-            return render(request, 'accounts/add_timesheet.html', {'project_name':project_name})
+            project_id = request.GET.get('project_id')
+            project = Project.objects.filter(id=project_id)[0]
+            print(project)
+            return render(request, 'accounts/add_timesheet.html', {'project':project})
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
 
+# check if the user is logged in else return him to the login page
+# if the request.method is GET, get the timesheet the user requested from database
+# check if the grace days are no more than 14 days. if more than 14 days send him/her to previous page
+# with an error messaage
+# if not then send him the requested timesheet to be edited.
 def edit_timesheet(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -69,10 +88,11 @@ def edit_timesheet(request):
             timesheet.date = request.POST['date']
             timesheet.start_time = request.POST['from']
             timesheet.end_time = request.POST['to']
-            timesheet.project = request.POST.get('project_name')
+            project = Project.objects.filter(project_name = request.POST.get('project_name'))[0]
+            timesheet.project = project
             timesheet.save()
-            username = request.user.username
-            timesheets = TimeSheet.objects.filter(user=username)
+            profile = Profile.objects.filter(user=request.user)[0]
+            timesheets = TimeSheet.objects.filter(profile=profile)
             return render(request, 'accounts/timesheet.html', {'timesheets':timesheets})
         else:
             timesheet_id = request.GET.get('timesheet_id')
@@ -87,6 +107,8 @@ def edit_timesheet(request):
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
 
+# check if the user is logged in else return him to the login page
+# get the profile object of the user and send it to him/her
 def profile_view(request):
     if request.user.is_authenticated:
         username = User.objects.get(username=request.user.username)

@@ -22,11 +22,11 @@ class Project(models.Model):
         return self.project_name
 
 class TimeSheet(models.Model):
-    user = models.CharField(max_length=100)
+    profile = models.ManyToManyField(Profile)
+    emp_name = models.CharField(max_length=100, default='emp_name')
     date  = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-    project = models.CharField(max_length=100, default='No Project')
-
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     def __str__(self):
-        return self.user +' '+ self.project +' '+ str(self.date)
+        return self.emp_name + ' ' + self.project.project_name +' '+ str(self.date)

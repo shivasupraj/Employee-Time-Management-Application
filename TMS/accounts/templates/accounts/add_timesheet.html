@@ -3,14 +3,14 @@
 {% if error %}
     {{error}}
 {% endif %}
-Adding timesheet for {{project_name}}
+Adding timesheet for {{project}}
 <form action="{% url 'accounts:addtimesheet' %}" method="post">
     {% csrf_token %}
     {% if request.GET.next %}
         <input type="hidden" name="next", value={{request.GET.next}}>
     {% endif %}
     {{request.user.username}} <br>
-    <input type="hidden" name="project_name" value='{{project_name}}'>
+    <input type="hidden" name="project_id" value='{{project.id}}'>
     Date : <input type="date" name="date">
     From : <input name="from" type="time">
     To   : <input name="to" type="time">
