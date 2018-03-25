@@ -1,13 +1,42 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% if projects %}
-<form action="{% url 'accounts:addtimesheet' %}" method="get">
-{% for project in projects %}
-    <input type="radio" name = "project_id" value="{{ project.id }}">{{ project.project_name }}<br>
-{%endfor%}
-    <input type="submit" value="Add Timesheet">
-</form>
-{%else%}
-  <h2>You are not in any project currently</h2>
-{%endif%}
-<br>
-<a href="{% url 'accounts:logout' %}">Logout</a>
+    <title>TMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="text-center">
+      {% if projects %}
+          {% for project in projects %}
+             <form action="{% url 'accounts:addtimesheet' %}" method="get">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-body">
+                        <input type="hidden" name="project_id" value="{{ project.id }}">
+                        <h5 class="card-title">{{ project.project_name }}</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras accumsan ex quis enim luctus sodales.
+                          Interdum et malesuada fames ac ante ipsum primis in faucibus. </p>
+                        <input type="submit" class="btn btn-primary" value="Add Timesheet">
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              </form>
+              <!-- <input type="radio" name = "project_id" value="{{ project.id }}">{{ project.project_name }}<br> -->
+          {%endfor%}
+              <!-- <input type="submit" value="Add Timesheet"> -->
+      {%else%}
+          <h2>You are not in any project currently</h2>
+      {%endif%}
+      <br>
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+    </body>
+</html>

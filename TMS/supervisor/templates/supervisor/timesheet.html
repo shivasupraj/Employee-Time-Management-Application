@@ -23,22 +23,22 @@
             <thead>
               <tr>
                 <th scope="col">Timesheet #</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Project</th>
                 <th scope="col">Date</th>
                 <th scope="col">From</th>
                 <th scope="col">To</th>
-                <th scope="col">project</th>
-                <th></th>
               </tr>
               {% for timesheet in timesheets %}
-              <form action="{% url 'accounts:edittimesheet' %}" method="get">
+              <form action="" method="get">
                 <tr>
                   <td name="timesheet_id">{{timesheet.id}}</td>
+                  <td name="emp_name">{{timesheet.emp_name}}</td>
                   <td name="project_name">{{ timesheet.project }}</td>
                   <td name="date"> {{ timesheet.date|date:"Y-m-d" }}</td>
                   <td name="from">{{timesheet.start_time|time:"h:i"}}</td>
                   <td name="to">{{ timesheet.end_time|time:"h:i" }}</td>
                   <input type="hidden" name="timesheet_id" value="{{timesheet.id}}">
-                  <td><input type="submit" class="btn btn-primary" value="Edit Timesheet"></td>
                 </tr>
               </form>
               {%endfor%}

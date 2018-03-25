@@ -49,8 +49,11 @@ def timesheet_view(request):
 def add_timesheet(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
+            if request.POST['from'] >= request.POST['to']:
+                project_id = request.POST.get('project_id')
+                project = Project.objects.filter(id=project_id)[0]
+                return render(request, 'accounts/add_timesheet.html', {'project':project,'error':'start time should be less than end time'})
             timesheet = TimeSheet()
-            print(request.user)
             timesheet.date = request.POST['date']
             timesheet.start_time = request.POST['from']
             timesheet.end_time = request.POST['to']
@@ -58,7 +61,6 @@ def add_timesheet(request):
             timesheet.emp_name = request.user.username
             timesheet.save()
             profile = Profile.objects.filter(user=request.user)[0]
-            print(profile)
             timesheet.profile.add(profile)
             timesheet.save()
             id = request.user.id
@@ -69,7 +71,6 @@ def add_timesheet(request):
         else:
             project_id = request.GET.get('project_id')
             project = Project.objects.filter(id=project_id)[0]
-            print(project)
             return render(request, 'accounts/add_timesheet.html', {'project':project})
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
@@ -96,19 +97,21 @@ def edit_timesheet(request):
             return render(request, 'accounts/timesheet.html', {'timesheets':timesheets})
         else:
             timesheet_id = request.GET.get('timesheet_id')
+            print(1, timesheet_id)
             timesheet = TimeSheet.objects.filter(id=timesheet_id)[0]
             grace_days = datetime.datetime.now().date()-timesheet.date
             # if the requested timesheet's date to be edited is more than 13 days or 2 weeks
             # then return the timesheets apge to user saying that, he canot edit that timesheet.
             if grace_days.days > 13:
-                timesheets = TimeSheet.objects.filter(user=request.user.username)
+                profile = Profile.objects.filter(user=request.user)[0]
+                timesheets = TimeSheet.objects.filter(profile=profile)
                 return render(request, 'accounts/timesheet.html', {'error':'You can\'t edit your two weeks past timesheet', 'timesheets':timesheets})
             return render(request, 'accounts/edittimesheet.html', {'timesheet':timesheet})
     else:
         return render(request, 'accounts/login.html', {'error': 'Login to access the page'})
 
 # check if the user is logged in else return him to the login page
-# get the profile object of the user and send it to him/her
+# get the profile object of the user and send it to him/her.
 def profile_view(request):
     if request.user.is_authenticated:
         username = User.objects.get(username=request.user.username)

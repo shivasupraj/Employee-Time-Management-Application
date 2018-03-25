@@ -1,22 +1,51 @@
-<h1>Manage Project</h1>
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% if error %}
-    {{error}}<br>
-{% endif %}
-Editing Project {{project.project_name}}
-<form action="{% url 'supervisor:manageproject' %}" method="post">
-    {% csrf_token %}
-    {% if request.GET.next %}
-        <input type="hidden" name="next", value={{request.GET.next}}>
-    {% endif %}
-    <input type="hidden" name="project_id", value={{project.id}}>
-    <input type="text" name="project_name" value='{{project.project_name}}'><br>
-    Manage the employees list:<br>
-    Check the boxes to remove employees:
-    {% for employee in project.employees.all %}
-      <input type="checkbox" name="employees" value="{{employee.id}}"> {{employee}}<br>
-    {% endfor%}
-    <input type="submit" name="submit">
-</form>
-<br>
-<a href="{% url 'accounts:logout' %}">Logout</a>
+    <title>TMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <h1>Manage Project</h1>
+    <h1>Editing Project {{project.project_name}}</h1>
+    <form action="{% url 'supervisor:manageproject' %}" method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}
+            <input type="hidden" name="next", value={{request.GET.next}}>
+        {% endif %}
+        <input type="hidden" name="project_id", value={{project.id}}>
+        <div class="form-group row">
+          <label for="projectName" class="col-sm-2 col-form-label">Project Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="project" class="form-control-plaintext" id="projectName" value="{{project.project_name}}">
+          </div>
+        </div>
+        <h6>Manage the employees list:</h6>
+        <p>Check the boxes to remove employees:</p>
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6">
+              {% for employee in employees_could_add.all %}
+                <input type="checkbox" name="employees" value="{{employee.id}}"> {{employee}}<br>
+              {% endfor%}
+              <button class="btn btn-primary" name="add_emp" type="submit">Add Employees</button>
+            </div>
+            <div class="col-xs-6">
+              {% for employee in project.employees.all %}
+                <input type="checkbox" name="employees" value="{{employee.id}}"> {{employee}}<br>
+              {% endfor%}
+              <button class="btn btn-danger" name="delete_emp" type="submit">Delete</button>
+            </div>
+          </div>
+        </div>
+    </form>
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+ </body>
+</html>

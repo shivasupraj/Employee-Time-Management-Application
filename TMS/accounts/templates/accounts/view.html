@@ -1,8 +1,32 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<a href="{% url 'accounts:project' %}">View Projects</a>
-<br>
-<a href="{% url 'accounts:timesheet_view' %}">View Timesheets</a>
-<br>
-<a href="{% url 'accounts:profile' %}">Profile</a>
-<br>
-<a href="{% url 'accounts:logout' %}">Logout</a>
+    <title>TMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+
+    <body class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <a href="{% url 'accounts:project' %}">View Projects</a>
+          </div>
+          <div class="col">
+            <a href="{% url 'accounts:timesheet_view' %}">View Timesheets</a>
+          </div>
+          <div class="col">
+            <a href="{% url 'accounts:profile' %}">Profile</a>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+    </body>
+</html>

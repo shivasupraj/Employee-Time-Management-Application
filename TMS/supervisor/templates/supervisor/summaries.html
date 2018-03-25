@@ -1,0 +1,38 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="text-center">
+      <h1>TimeSheet for Employees working on {{project_name}}</h1>
+      {% if emp_summaries %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Hours Worked</th>
+          </tr>
+        </thead>
+        {% for key,value in emp_summaries.items %}
+        <tr>
+          <td>{{key}}</td>
+          <td>{{value}}</td>
+        </tr>
+        {%endfor%}
+        </thead>
+      </table>
+      {%else%}
+       <h1>There are not Timesheets available</h1>
+      {%endif%}
+      <a href="{% url 'supervisor:logout' %}">Logout</a>
+  </body>
+</html>

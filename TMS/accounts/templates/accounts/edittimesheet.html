@@ -1,21 +1,60 @@
-<h1>Edit timesheet</h1>
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% if error %}
-    {{error}}
-{% endif %}
-Ediiting timesheet for {{timesheet.project}}
-<form action="{% url 'accounts:edittimesheet' %}" method="post">
-    {% csrf_token %}
-    {% if request.GET.next %}
-        <input type="hidden" name="next", value={{request.GET.next}}>
+    <title>TMS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <h1>Edit timesheet</h1>
+    {% if error %}
+        <h1>{{error}}</h1>
     {% endif %}
-    {{request.user.username}} <br>
-    <input type="hidden" name="timesheet_id", value={{timesheet.id}}>
-    <input type="hidden" name="project_name" value='{{timesheet.project}}'>    
-    Date : <input type="date" name="date" value="{{timesheet.date|date:"Y-m-d"}}">
-    From : <input name="from" type="time" value="{{timesheet.start_time|time:"h:i"}}">
-    To   : <input name="to" type="time" value="{{timesheet.end_time|time:"h:i"}}">
-    <input type="submit" name="Add Timesheet">
-</form>
-<br>
-<a href="{% url 'accounts:logout' %}">Logout</a>
+
+    <h1>Ediiting timesheet for {{timesheet.project}}</h1>
+    <form action="{% url 'accounts:edittimesheet' %}" method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}
+            <input type="hidden" name="next", value={{request.GET.next}}>
+        {% endif %}
+        <input type="hidden" name="timesheet_id", value={{timesheet.id}}>
+        <input type="hidden" name="project_name" value='{{timesheet.project}}'>
+        <div class="form-group row">
+          <label for="" class="col-md-3 col-form-label">Date</label>
+          <div class="col-md-3">
+            <input type="date" class="form-control" name="date" id="inputEmail3" value="{{timesheet.date|date:"Y-m-d"}}" placeholder="Date">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-3 col-form-label">From</label>
+          <div class="col-md-3">
+            <input type="time" class="form-control" name="from" id="inputEmail3" value="{{timesheet.start_time|time:"h:i"}}" placeholder="From">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-3 col-form-label">To</label>
+          <div class="col-md-3">
+            <input type="time" class="form-control" name="to" id="inputEmail3" value="{{timesheet.end_time|time:"h:i"}}" placeholder="To">
+          </div>
+        </div>
+        <!-- Date : <input type="date" name="date" value="{{timesheet.date|date:"Y-m-d"}}">
+        From : <input name="from" type="time" value="{{timesheet.start_time|time:"h:i"}}">
+        To   : <input name="to" type="time" value="{{timesheet.end_time|time:"h:i"}}"> -->
+        <div class="form-group row">
+          <div class="col-md-8">
+            <button type="submit" class="btn btn-primary">Add Timesheet</button>
+          </div>
+        </div>
+        <!-- <input type="submit" name="Add Timesheet"> -->
+    </form>
+    <br>
+    <a href="{% url 'accounts:logout' %}">Logout</a>
+  </body>
+</html>

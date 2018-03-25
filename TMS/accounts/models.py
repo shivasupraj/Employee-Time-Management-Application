@@ -28,5 +28,6 @@ class TimeSheet(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    #project_name = models.CharField(max_length=100, default='project_name')
     def __str__(self):
         return self.emp_name + ' ' + self.project.project_name +' '+ str(self.date)
